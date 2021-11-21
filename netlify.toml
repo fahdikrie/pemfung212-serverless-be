@@ -4,6 +4,9 @@
   functions = "netlify/functions"
   publish = "public"
 
+[dev]
+  port = 3000 # Port that the dev server will be listening on
+
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
   #[[redirects]]
