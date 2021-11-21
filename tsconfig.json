@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/*.ts", "src/**/*.ts", "src/**/*.js"],
+  "include": ["netlify/functions"],
   "exclude": ["node_modules"]
 }
