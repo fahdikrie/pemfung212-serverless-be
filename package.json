@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@netlify/functions": "^0.9.0",
+    "mongodb": "^4.2.1",
     "serverless": "^2.66.2",
     "typescript": "^4.5.2"
   },
