@@ -11,7 +11,8 @@ node_modules
 /build
 .vscode
 dist
+.DS_Store
+.env
 
 # Local Netlify folder
 .netlify
-.DS_Store
