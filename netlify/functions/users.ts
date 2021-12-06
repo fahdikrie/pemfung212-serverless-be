@@ -1,4 +1,5 @@
 import * as mongoDb from 'mongodb';
+
 import { connectToDatabase, getDbInfo } from '../../helper/db';
 
 exports.handler = async () => {
