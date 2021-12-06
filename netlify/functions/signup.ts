@@ -1,8 +1,10 @@
 import * as mongoDb from 'mongodb';
 
 import { connectToDatabase, getDbInfo } from '../../helper/db';
+import { checkIfObjContainsNull } from '../../helper/util';
 import { hashPassword } from '../../helper/user';
 import { UserData } from '../../types/user';
+import { generateToken } from '../../helper/token';
 
 interface SignUpPayload {
   name: string;
@@ -11,28 +13,24 @@ interface SignUpPayload {
   password: string;
 }
 
-const checkIfObjContainsNull = <T>(obj: T): boolean =>
-  !Object.values(obj).every((attr) => attr === null);
-
 exports.handler = async (event: { body: string }) => {
   const payload: SignUpPayload = JSON.parse(event.body);
-  if (checkIfObjContainsNull(payload)) {
+  if (checkIfObjContainsNull(payload))
     return {
       statusCode: 400,
       body: JSON.stringify({
         error: 'Bad request: incomplete Sign Up information',
       }),
     };
-  }
 
   const [uri, cluster] = getDbInfo();
   const dbClient = (await connectToDatabase(uri, cluster)) as mongoDb.Db;
-  const cursor = await dbClient.collection('user');
+  const cursor = dbClient.collection('user');
 
   const createdUser = await cursor
     .find({ username: payload.username })
     .toArray();
-  if (!createdUser.length)
+  if (createdUser.length)
     return {
       statusCode: 401,
       body: JSON.stringify({
@@ -54,11 +52,18 @@ exports.handler = async (event: { body: string }) => {
     });
 
   const userData: UserData = { ...payload };
-  userData.userid = userID.toString();
+  userData._id = userID as mongoDb.ObjectId;
+  const [token, refreshToken] = generateToken(userData);
 
   const user = await cursor.findOneAndUpdate(
     { _id: userID },
-    { userid: userID },
+    {
+      $set: {
+        user_id: userID.toString(),
+        token: token,
+        refresh_token: refreshToken,
+      },
+    },
     { returnDocument: 'after' }
   );
 

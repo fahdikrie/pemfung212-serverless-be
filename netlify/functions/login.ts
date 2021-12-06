@@ -28,7 +28,7 @@ exports.handler = async (event: { body: string }) => {
 
   const [uri, cluster] = getDbInfo();
   const dbClient = (await connectToDatabase(uri, cluster)) as mongoDb.Db;
-  const cursor = await dbClient.collection('user');
+  const cursor = dbClient.collection('user');
 
   const user = await cursor.find({ username: username }).toArray();
   if (!user.length)
@@ -57,7 +57,7 @@ exports.handler = async (event: { body: string }) => {
   };
 
   await cursor.updateOne(
-    { user_id: user[0]._id.toString() },
+    { userid: user[0]._id.toString() },
     { $set: loginData },
     { upsert: true }
   );
