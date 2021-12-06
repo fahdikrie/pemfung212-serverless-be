@@ -55,7 +55,7 @@ exports.handler = async (event: { body: string }) => {
   userData._id = userID as mongoDb.ObjectId;
   const [token, refreshToken] = generateToken(userData);
 
-  const user = await cursor.findOneAndUpdate(
+  const updatedUser = await cursor.findOneAndUpdate(
     { _id: userID },
     {
       $set: {
@@ -66,11 +66,13 @@ exports.handler = async (event: { body: string }) => {
     { returnDocument: 'after' }
   );
 
+  console.log(updatedUser);
+
   return {
     statusCode: 200,
     body: JSON.stringify(
       {
-        user: user,
+        user: updatedUser.value,
         message: 'Sign Up Successful',
       },
       null,
