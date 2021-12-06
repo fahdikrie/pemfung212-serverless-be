@@ -34,3 +34,5 @@ export const generateToken = (user: mongoDb.Document | UserData) => {
 
   return [token, refreshToken];
 };
+
+export const decodeToken = (token: string) => jwt.verify(token, SECRET_KEY);

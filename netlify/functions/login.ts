@@ -16,14 +16,13 @@ interface LoginDataUpdate {
 
 exports.handler = async (event: { body: string }) => {
   const { username, password }: LoginPayload = JSON.parse(event.body);
-  if (!username || !password) {
+  if (!username || !password)
     return {
       statusCode: 400,
       body: JSON.stringify({
         error: 'Bad request: incomplete Login information',
       }),
     };
-  }
 
   const [uri, cluster] = getDbInfo();
   const dbClient = (await connectToDatabase(uri, cluster)) as mongoDb.Db;
