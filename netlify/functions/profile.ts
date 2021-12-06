@@ -2,15 +2,7 @@ import * as mongoDb from 'mongodb';
 
 import { connectToDatabase, getDbInfo } from '../../helper/db';
 import { decodeToken } from '../../helper/token';
-
-interface DecodedToken {
-  name: string;
-  fullname: string;
-  username: string;
-  uid: string;
-  iat: number;
-  exp: number;
-}
+import { DecodedToken } from '../../types/token';
 
 exports.handler = async (event: { headers: { token: string } }) => {
   const decoded = decodeToken(event.headers.token) as DecodedToken;
