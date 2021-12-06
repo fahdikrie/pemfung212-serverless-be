@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 
 import { decodeToken } from '../../helper/token';
 import { DecodedToken } from '../../types/token';
+import { headers } from '../../constants/header';
 
 exports.handler = async (event: { headers: { token: string } }) => {
   const decoded = decodeToken(event.headers.token) as DecodedToken;
@@ -25,6 +26,7 @@ exports.handler = async (event: { headers: { token: string } }) => {
 
   return {
     statusCode: 200,
+    headers,
     body: JSON.stringify(data),
   };
 };

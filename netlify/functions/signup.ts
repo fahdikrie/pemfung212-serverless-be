@@ -2,9 +2,10 @@ import * as mongoDb from 'mongodb';
 
 import { connectToDatabase, getDbInfo } from '../../helper/db';
 import { checkIfObjContainsNull } from '../../helper/util';
-import { hashPassword } from '../../helper/user';
-import { UserData } from '../../types/user';
 import { generateToken } from '../../helper/token';
+import { hashPassword } from '../../helper/user';
+import { headers } from '../../constants/header';
+import { UserData } from '../../types/user';
 
 interface SignUpPayload {
   name: string;
@@ -18,6 +19,7 @@ exports.handler = async (event: { body: string }) => {
   if (checkIfObjContainsNull(payload))
     return {
       statusCode: 400,
+      headers,
       body: JSON.stringify({
         error: 'Bad request: incomplete Sign Up information',
       }),
@@ -33,6 +35,7 @@ exports.handler = async (event: { body: string }) => {
   if (createdUser.length)
     return {
       statusCode: 401,
+      headers,
       body: JSON.stringify({
         error: 'Bad request: Username already taken!',
       }),
@@ -41,10 +44,11 @@ exports.handler = async (event: { body: string }) => {
   payload.password = await hashPassword(payload.password);
   const userID = await cursor
     .insertOne(payload)
-    .then((inserted) => inserted.insertedId)
-    .catch((err) => {
+    .then((inserted: mongoDb.Document) => inserted.insertedId)
+    .catch((err: any) => {
       return {
         statusCode: 500,
+        headers,
         body: JSON.stringify({
           error: err,
         }),
@@ -66,10 +70,9 @@ exports.handler = async (event: { body: string }) => {
     { returnDocument: 'after' }
   );
 
-  console.log(updatedUser);
-
   return {
     statusCode: 200,
+    headers,
     body: JSON.stringify(
       {
         user: updatedUser.value,

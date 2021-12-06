@@ -3,6 +3,7 @@ import * as mongoDb from 'mongodb';
 import { connectToDatabase, getDbInfo } from '../../helper/db';
 import { verifyPassword } from '../../helper/user';
 import { generateToken } from '../../helper/token';
+import { headers } from '../../constants/header';
 
 interface LoginPayload {
   username: string;
@@ -19,6 +20,7 @@ exports.handler = async (event: { body: string }) => {
   if (!username || !password)
     return {
       statusCode: 400,
+      headers,
       body: JSON.stringify({
         error: 'Bad request: incomplete Login information',
       }),
@@ -32,6 +34,7 @@ exports.handler = async (event: { body: string }) => {
   if (!user.length)
     return {
       statusCode: 401,
+      headers,
       body: JSON.stringify({
         error: 'Unauthorized: incorrect Login information',
       }),
