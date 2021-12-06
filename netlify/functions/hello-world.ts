@@ -7,7 +7,7 @@ exports.handler = async (event: { headers: { token: string } }) => {
   if (!Object.keys(decoded).length)
     return {
       statusCode: 400,
-      headers,
+      headers: headers,
       body: JSON.stringify({
         error: 'Bad request: No logged in user found',
       }),
@@ -15,7 +15,7 @@ exports.handler = async (event: { headers: { token: string } }) => {
 
   return {
     statusCode: 200,
-    headers,
+    headers: headers,
     body: JSON.stringify({
       message: 'Hello world!',
     }),

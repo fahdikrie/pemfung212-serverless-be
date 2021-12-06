@@ -20,7 +20,7 @@ exports.handler = async (event: { body: string }) => {
   if (!username || !password)
     return {
       statusCode: 400,
-      headers,
+      headers: headers,
       body: JSON.stringify({
         error: 'Bad request: incomplete Login information',
       }),
@@ -34,7 +34,7 @@ exports.handler = async (event: { body: string }) => {
   if (!user.length)
     return {
       statusCode: 401,
-      headers,
+      headers: headers,
       body: JSON.stringify({
         error: 'Unauthorized: incorrect Login information',
       }),
@@ -44,6 +44,7 @@ exports.handler = async (event: { body: string }) => {
   if (!isPasswordMatch)
     return {
       statusCode: 401,
+      headers: headers,
       body: JSON.stringify({
         error: 'Unauthorized: incorrect Login information',
       }),
@@ -64,6 +65,7 @@ exports.handler = async (event: { body: string }) => {
 
   return {
     statusCode: 200,
+    headers: headers,
     body: JSON.stringify(
       {
         user: user[0],

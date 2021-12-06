@@ -35,7 +35,7 @@ exports.handler = async (event: { body: string }) => {
   if (createdUser.length)
     return {
       statusCode: 401,
-      headers,
+      headers: headers,
       body: JSON.stringify({
         error: 'Bad request: Username already taken!',
       }),
@@ -48,7 +48,7 @@ exports.handler = async (event: { body: string }) => {
     .catch((err: any) => {
       return {
         statusCode: 500,
-        headers,
+        headers: headers,
         body: JSON.stringify({
           error: err,
         }),
@@ -72,7 +72,7 @@ exports.handler = async (event: { body: string }) => {
 
   return {
     statusCode: 200,
-    headers,
+    headers: headers,
     body: JSON.stringify(
       {
         user: updatedUser.value,

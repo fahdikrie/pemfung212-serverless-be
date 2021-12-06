@@ -10,7 +10,7 @@ exports.handler = async (event: { headers: { token: string } }) => {
   if (!Object.keys(decoded).length)
     return {
       statusCode: 400,
-      headers,
+      headers: headers,
       body: JSON.stringify({
         error: 'Bad request: No logged in user found',
       }),
@@ -24,7 +24,7 @@ exports.handler = async (event: { headers: { token: string } }) => {
   if (!user.length)
     return {
       statusCode: 401,
-      headers,
+      headers: headers,
       body: JSON.stringify({
         error: 'Unauthorized: incorrect Login information',
       }),
@@ -32,7 +32,7 @@ exports.handler = async (event: { headers: { token: string } }) => {
 
   return {
     statusCode: 200,
-    headers,
+    headers: headers,
     body: JSON.stringify(
       {
         user: user[0],
