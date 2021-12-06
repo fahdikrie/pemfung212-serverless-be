@@ -4,10 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "prettier": "prettier --write .",
-    "serve": "cd client && vue-cli-service serve",
-    "build": "cd client && vue-cli-service build",
-    "lint": "cd client && vue-cli-service lint"
+    "prettier": "prettier --write ."
   },
   "devDependencies": {
     "@serverless/eslint-config": "^4.0.0",
@@ -24,14 +21,7 @@
     "lint-staged": "^12.1.2",
     "node-fetch": "^3.1.0",
     "prettier": "^2.5.1",
-    "serverless-offline": "^8.3.0",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint-plugin-vue": "^7.0.0"
+    "serverless-offline": "^8.3.0"
   },
   "dependencies": {
     "@netlify/functions": "^0.9.0",
@@ -39,9 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.2.1",
     "serverless": "^2.66.2",
-    "typescript": "^4.5.2",
-    "core-js": "^3.6.5",
-    "vue": "^3.0.0"
+    "typescript": "^4.5.2"
   },
   "eslintConfig": {
     "extends": "@serverless/eslint-config/node",
