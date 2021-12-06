@@ -9,8 +9,7 @@ interface LoginPayload {
   password: string;
 }
 
-interface LoginData {
-  user_id: string;
+interface LoginDataUpdate {
   token: string;
   refresh_token: string;
 }
@@ -50,15 +49,14 @@ exports.handler = async (event: { body: string }) => {
 
   const [token, refreshToken] = generateToken(user[0] as mongoDb.Document);
 
-  const loginData: LoginData = {
-    user_id: user[0]._id.toString(),
+  const loginDataUpdate: LoginDataUpdate = {
     token: token,
     refresh_token: refreshToken,
   };
 
   await cursor.updateOne(
-    { userid: user[0]._id.toString() },
-    { $set: loginData },
+    { username: user[0].username },
+    { $set: loginDataUpdate },
     { upsert: true }
   );
 

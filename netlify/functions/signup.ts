@@ -59,7 +59,6 @@ exports.handler = async (event: { body: string }) => {
     { _id: userID },
     {
       $set: {
-        user_id: userID.toString(),
         token: token,
         refresh_token: refreshToken,
       },
