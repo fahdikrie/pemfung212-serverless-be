@@ -2,22 +2,13 @@ import * as mongoDb from 'mongodb';
 
 import { connectToDatabase, getDbInfo } from '../../helper/db';
 import { hashPassword } from '../../helper/user';
+import { UserData } from '../../types/user';
 
 interface SignUpPayload {
   name: string;
   fullname: string;
   username: string;
   password: string;
-}
-
-interface UserData {
-  name: string;
-  userid?: string;
-  fullname: string;
-  username: string;
-  password: string;
-  token?: string;
-  refreshtoken?: string;
 }
 
 const checkIfObjContainsNull = <T>(obj: T): boolean =>

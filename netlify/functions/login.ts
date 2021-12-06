@@ -2,10 +2,17 @@ import * as mongoDb from 'mongodb';
 
 import { connectToDatabase, getDbInfo } from '../../helper/db';
 import { verifyPassword } from '../../helper/user';
+import { generateToken } from '../../helper/token';
 
 interface LoginPayload {
   username: string;
   password: string;
+}
+
+interface LoginData {
+  user_id: string;
+  token: string;
+  refresh_token: string;
 }
 
 exports.handler = async (event: { body: string }) => {
@@ -21,9 +28,9 @@ exports.handler = async (event: { body: string }) => {
 
   const [uri, cluster] = getDbInfo();
   const dbClient = (await connectToDatabase(uri, cluster)) as mongoDb.Db;
+  const cursor = await dbClient.collection('user');
 
-  const cursor = await dbClient.collection('user').find({ username: username });
-  const user = await cursor.toArray();
+  const user = await cursor.find({ username: username }).toArray();
   if (!user.length)
     return {
       statusCode: 401,
@@ -40,6 +47,20 @@ exports.handler = async (event: { body: string }) => {
         error: 'Unauthorized: incorrect Login information',
       }),
     };
+
+  const [token, refreshToken] = generateToken(user[0] as mongoDb.Document);
+
+  const loginData: LoginData = {
+    user_id: user[0]._id.toString(),
+    token: token,
+    refresh_token: refreshToken,
+  };
+
+  await cursor.updateOne(
+    { user_id: user[0]._id.toString() },
+    { $set: loginData },
+    { upsert: true }
+  );
 
   return {
     statusCode: 200,
